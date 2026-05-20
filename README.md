@@ -1,4 +1,4 @@
-![image alt](https://github.com/SirSalch/Argentix-Public-Version/blob/main/Repository%20content/Header.png?raw=true) <br> <br>
+![image alt](https://github.com/SirSalch/Argenix/blob/main/Repository%20content/Header.png?raw=true) <br> <br>
 
 **( 🛠 В разработке ) Аргеникс** — это открытая программно-аппаратная экосистема для разработки электронных устройств на базе микроконтроллеров с архитектурой RISC-V, предоставляющая линейку фирменных отладочных плат. Экосистема предлагает лаконичный, интуитивно понятный синтаксис, скрывая сложную рутину работы с периферией под капотом и позволяя полностью сосредоточиться на логике приложения. <br>
 
@@ -16,7 +16,7 @@
 
 ## Пример Blink
 ```c++
-#include <ARGENTIX.hpp>
+#include <ARGENIX.hpp>
 
 int main(void) {
   Pin led(PIN_0_0, OUTPUT);
@@ -34,9 +34,9 @@ int main(void) {
 ```
 
 ## Пример генерации ШИМ
-![image alt](https://github.com/SirSalch/Argentix-Public-Version/blob/main/Repository%20content/PWM.png?raw=true) <br>
+![image alt](https://github.com/SirSalch/Argenix/blob/main/Repository%20content/PWM.png?raw=true) <br>
 ```c++
-#include <ARGENTIX.hpp>
+#include <ARGENIX.hpp>
 
 int main(void) {
   Pwm motor(PWM1);
@@ -76,15 +76,14 @@ sudo apt install libusb-1.0-0
 sudo apt install cmake build-essential
 ```
  
-
-### Установка ARGENTIX
+### Установка ARGENIX
 Перейдите в директорию куда хотите клонировать реаозиторий
 ``` bash
 cd <Ваш путь к желаемой директории>
 ```
-Клонируйте репозиторий ARGENTIX
+Клонируйте репозиторий ARGENIX
 ``` bash
-git clone https://github.com/SirSalch/Argentix-Public-Version.git
+git clone https://github.com/SirSalch/Argenix.git
 ```
  
 
