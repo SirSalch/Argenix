@@ -1,12 +1,6 @@
-#include <ARGENTIX.hpp>
+#include <ARGENIX.hpp>
 
-int main(void) {
-  Pin led(PIN_1_5, OUTPUT);
+int main() {
 
-  while (1) {
-    led.set(HIGH);
-    delay(300);
-    led.set(LOW);
-    delay(300);
-  }
+  while (1) { }
 }

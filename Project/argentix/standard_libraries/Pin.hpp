@@ -1,83 +1,92 @@
 #ifndef _PIN_HPP_
 #define _PIN_HPP_
 
-#include <GPIO.hpp>
-#include <APB.hpp>
+#include <MIK32_GPIO.hpp>
+#include <MIK32_APB.hpp>
 
 
-struct PinStruct {
-  GpioPort* port;
-  uint8_t   pinNumber;
-  uint32_t  clkMask;
+/*
+[=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=]
+   ╔═════╗    ╔═════════╗  ╔═════════╗  ╔═════════╗  ╔═╗     ╔═╗  ╔═╗     ╔═╗  ╔═╗     ╔═╗  ╔═════════╗ 
+  ╔██████╚═╗  ██████████║  ██████████╝  ██████████╝  ██║     ██║  ██║   ╔═██║  ██║   ╔═██╝  ██████████╝ 
+ ██╚═════██║  ██╚═════██║  ██║          ██╚═══════╗  ██╚═════██║  ██║ ╔═████║  ██╚═══██╝    ██║         
+ ██████████║  ██████████╝  ██║          ██████████╝  ██████████║  ██╚═██╝ ██║  ██████╚═╗    ██║         
+ ██║     ██║  ██║          ██║          ██╚═══════╗  ██║     ██║  ████╝   ██║  ██║   ██╚═╗  ██╚═══════╗ 
+ ██╝     ██╝  ██╝          ██╝          ██████████╝  ██╝     ██╝  ██╝     ██╝  ██╝     ██╝  ██████████╝ 
+ 
+[=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=]
+ > Автор: _Salch_
+ > Библиотека управлеия пинами
+*/
+
+
+// Структура пина
+template<typename Gpio, uint8_t PinNumber>
+class GpioPin {
+public:
+  Gpio& port;                                    // Gpio порт пина
+  static constexpr uint8_t number = PinNumber;  // Номер пина
+  
+  // Конструктор класса
+  constexpr GpioPin(Gpio& _port) : port(_port){} 
 };
 
 
-enum {
-  // Состояния пина
-  LOW  = 0,
-  HIGH = 1,
-
-  // Режимы работы
-  OUTPUT = 1,
-  INPUT  = 0
-};
-
-
+// Класс пина
+template<typename GpioPin>
 class Pin {
 public:
-  inline Pin(PinStruct pin, const uint8_t mode) : _pin(pin) {
-    Gpio::setClocking(_pin.clkMask, true);
-    Gpio::setMode(_pin.port, _pin.pinNumber, mode);
+  // Конструктор класса
+  constexpr inline Pin(GpioPin& _pin, uint8_t mode) : pin(_pin) {
+    pin.port.setClocking(true);
+    pin.port.setMode(pin.number, mode);
   }
 
-  inline void set(const uint8_t state) {
-    Gpio::setState(_pin.port, _pin.pinNumber, state);
+  // Выходное значение пина (HIGH/LOW)
+  constexpr inline void set(uint8_t state) {
+    pin.port.setState(pin.number, state);
   }
 
 private:
-  PinStruct _pin;
+  GpioPin& pin;
 };
 
 
 // Пины порта №0
-static const PinStruct PIN_0_0  = { GPIO_0, 0,  CLK_GPIO_0 };
-static const PinStruct PIN_0_1  = { GPIO_0, 1,  CLK_GPIO_0 };
-static const PinStruct PIN_0_2  = { GPIO_0, 2,  CLK_GPIO_0 };
-static const PinStruct PIN_0_3  = { GPIO_0, 3,  CLK_GPIO_0 };
-static const PinStruct PIN_0_4  = { GPIO_0, 4,  CLK_GPIO_0 };
-static const PinStruct PIN_0_5  = { GPIO_0, 5,  CLK_GPIO_0 };
-static const PinStruct PIN_0_6  = { GPIO_0, 6,  CLK_GPIO_0 };
-static const PinStruct PIN_0_7  = { GPIO_0, 7,  CLK_GPIO_0 };
-static const PinStruct PIN_0_8  = { GPIO_0, 8,  CLK_GPIO_0 };
-static const PinStruct PIN_0_9  = { GPIO_0, 9,  CLK_GPIO_0 };
-static const PinStruct PIN_0_10 = { GPIO_0, 10, CLK_GPIO_0 };
-static const PinStruct PIN_0_11 = { GPIO_0, 11, CLK_GPIO_0 };
-static const PinStruct PIN_0_12 = { GPIO_0, 12, CLK_GPIO_0 };
-static const PinStruct PIN_0_13 = { GPIO_0, 13, CLK_GPIO_0 };
-static const PinStruct PIN_0_14 = { GPIO_0, 14, CLK_GPIO_0 };
-
+static GpioPin<decltype(Gpio_0), 0>  PIN_0_0 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 1>  PIN_0_1 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 2>  PIN_0_2 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 3>  PIN_0_3 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 4>  PIN_0_4 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 5>  PIN_0_5 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 6>  PIN_0_6 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 7>  PIN_0_7 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 8>  PIN_0_8 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 9>  PIN_0_9 (Gpio_0);
+static GpioPin<decltype(Gpio_0), 10> PIN_0_10(Gpio_0);
 
 // Пины порта №1
-static const PinStruct PIN_1_0  = { GPIO_1, 0,  CLK_GPIO_1 };
-static const PinStruct PIN_1_1  = { GPIO_1, 1,  CLK_GPIO_1 };
-static const PinStruct PIN_1_2  = { GPIO_1, 2,  CLK_GPIO_1 };
-static const PinStruct PIN_1_3  = { GPIO_1, 3,  CLK_GPIO_1 };
-static const PinStruct PIN_1_4  = { GPIO_1, 4,  CLK_GPIO_1 };
-static const PinStruct PIN_1_5  = { GPIO_1, 5,  CLK_GPIO_1 };
-static const PinStruct PIN_1_6  = { GPIO_1, 6,  CLK_GPIO_1 };
-static const PinStruct PIN_1_7  = { GPIO_1, 7,  CLK_GPIO_1 };
-static const PinStruct PIN_1_8  = { GPIO_1, 8,  CLK_GPIO_1 };
-static const PinStruct PIN_1_9  = { GPIO_1, 9,  CLK_GPIO_1 };
-static const PinStruct PIN_1_10 = { GPIO_1, 10, CLK_GPIO_1 };
-static const PinStruct PIN_1_11 = { GPIO_1, 11, CLK_GPIO_1 };
-static const PinStruct PIN_1_12 = { GPIO_1, 12, CLK_GPIO_1 };
-
+static GpioPin<decltype(Gpio_1), 0>  PIN_1_0 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 1>  PIN_1_1 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 2>  PIN_1_2 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 3>  PIN_1_3 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 4>  PIN_1_4 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 5>  PIN_1_5 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 6>  PIN_1_6 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 7>  PIN_1_7 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 8>  PIN_1_8 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 9>  PIN_1_9 (Gpio_1);
+static GpioPin<decltype(Gpio_1), 10> PIN_1_10(Gpio_1);
 
 // Пины порта №2
-static const PinStruct PIN_2_3  = { GPIO_2, 3,  CLK_GPIO_2 };
-static const PinStruct PIN_2_4  = { GPIO_2, 4,  CLK_GPIO_2 };
-static const PinStruct PIN_2_5  = { GPIO_2, 5,  CLK_GPIO_2 };
-static const PinStruct PIN_2_6  = { GPIO_2, 6,  CLK_GPIO_2 };
-static const PinStruct PIN_2_7  = { GPIO_2, 7,  CLK_GPIO_2 };
+static GpioPin<decltype(Gpio_2), 0>  PIN_2_0 (Gpio_2);
+static GpioPin<decltype(Gpio_2), 1>  PIN_2_1 (Gpio_2);
+static GpioPin<decltype(Gpio_2), 2>  PIN_2_2 (Gpio_2);
+static GpioPin<decltype(Gpio_2), 3>  PIN_2_3 (Gpio_2);
+static GpioPin<decltype(Gpio_2), 4>  PIN_2_4 (Gpio_2);
+static GpioPin<decltype(Gpio_2), 5>  PIN_2_5 (Gpio_2);
+static GpioPin<decltype(Gpio_2), 6>  PIN_2_6 (Gpio_2);
+static GpioPin<decltype(Gpio_2), 7>  PIN_2_7 (Gpio_2);
+
 
 #endif /* _PIN_HPP_ */

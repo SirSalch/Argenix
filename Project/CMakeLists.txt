@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.13)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 set(CMAKE_C_COMPILER    riscv64-unknown-elf-gcc)
 set(CMAKE_CXX_COMPILER  riscv64-unknown-elf-g++)
 set(CMAKE_ASM_COMPILER  riscv64-unknown-elf-gcc)
@@ -16,7 +20,7 @@ add_executable(firmware.elf
 target_include_directories(firmware.elf PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/argentix/standard_libraries
     ${CMAKE_CURRENT_SOURCE_DIR}/argentix
-    ${CMAKE_CURRENT_SOURCE_DIR}/aris
+    ${CMAKE_CURRENT_SOURCE_DIR}/aris/mik32
 )
 
 target_compile_options(firmware.elf PRIVATE
@@ -31,7 +35,6 @@ target_compile_options(firmware.elf PRIVATE
     -fno-unwind-tables
 )
 
-# Добавляем те же флаги архитектуры на этап линковки
 target_link_options(firmware.elf PRIVATE
     -march=rv32i
     -mabi=ilp32
@@ -47,15 +50,15 @@ set_target_properties(firmware.elf PROPERTIES
 
 add_custom_command(TARGET firmware.elf POST_BUILD
     # Вывод логотипа
-    COMMAND echo "[=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=]"
-    COMMAND echo "   ╔═════╗    ╔═════════╗  ╔═════════╗  ╔═════════╗  ╔═╗     ╔═╗  ╔═════════╗  ╔═╗     ╔═╗  ╔═╗     ╔═╗  ╔═════════╗ "
-    COMMAND echo "  ╔██████╚═╗  ██████████║  ██████████╝  ██████████╝  ██║     ██║  ██████████╝  ██║   ╔═██║  ██║   ╔═██╝  ██████████╝ "
-    COMMAND echo " ██╚═════██║  ██╚═════██║  ██║          ██╚═══════╗  ██╚═════██║      ██║      ██║ ╔═████║  ██╚═══██╝    ██║         "
-    COMMAND echo " ██████████║  ██████████╝  ██║          ██████████╝  ██████████║      ██║      ██╚═██╝ ██║  ██████╚═╗    ██║         "
-    COMMAND echo " ██║     ██║  ██║          ██║          ██╚═══════╗  ██║     ██║      ██║      ████╝   ██║  ██║   ██╚═╗  ██╚═══════╗ "
-    COMMAND echo " ██╝     ██╝  ██╝          ██╝          ██████████╝  ██╝     ██╝      ██╝      ██╝     ██╝  ██╝     ██╝  ██████████╝ "
+    COMMAND echo "[=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=]"
+    COMMAND echo "   ╔═════╗    ╔═════════╗  ╔═════════╗  ╔═════════╗  ╔═╗     ╔═╗  ╔═╗     ╔═╗  ╔═╗     ╔═╗  ╔═════════╗ "
+    COMMAND echo "  ╔██████╚═╗  ██████████║  ██████████╝  ██████████╝  ██║     ██║  ██║   ╔═██║  ██║   ╔═██╝  ██████████╝ "
+    COMMAND echo " ██╚═════██║  ██╚═════██║  ██║          ██╚═══════╗  ██╚═════██║  ██║ ╔═████║  ██╚═══██╝    ██║         "
+    COMMAND echo " ██████████║  ██████████╝  ██║          ██████████╝  ██████████║  ██╚═██╝ ██║  ██████╚═╗    ██║         "
+    COMMAND echo " ██║     ██║  ██║          ██║          ██╚═══════╗  ██║     ██║  ████╝   ██║  ██║   ██╚═╗  ██╚═══════╗ "
+    COMMAND echo " ██╝     ██╝  ██╝          ██╝          ██████████╝  ██╝     ██╝  ██╝     ██╝  ██╝     ██╝  ██████████╝ "
     COMMAND echo " "
-    COMMAND echo "[=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=]"
+    COMMAND echo "[=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=═=]"
 
     # Вывод информации о размере
     COMMAND echo ""
