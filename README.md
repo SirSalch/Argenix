@@ -17,9 +17,10 @@
 ## Пример Blink
 ```c++
 #include <ARGENIX.hpp>
+Pin led(PIN_1_5);
 
-int main(void) {
-  Pin led(PIN_0_0, OUTPUT);
+int main() {
+  led.setup(OUTPUT);
 
   while (1) {
     led.set(HIGH);
@@ -32,15 +33,34 @@ int main(void) {
 ```
 Вес прошивки ЕЕПРОМ:120 байт,  ОЗУ:0 байт
 ```
+### или
+```c++
+#include <ARGENIX.hpp>
+
+int main() {
+  PIN_1_5.setup(OUTPUT);
+
+  while (1) {
+    PIN_1_5.set(HIGH);
+    delay(300);
+    PIN_1_5.set(LOW);
+    delay(300);
+  }
+}
+```
+```
+Вес прошивки ЕЕПРОМ:120 байт,  ОЗУ:0 байт
+```
 
 ## Пример генерации ШИМ
 ![image alt](https://github.com/SirSalch/Argenix/blob/main/Repository%20content/PWM.png?raw=true) <br>
 ```c++
 #include <ARGENIX.hpp>
+Pwm motor(PWM1);
 
-int main(void) {
-  Pwm motor(PWM1);
-  motor.generate(CH1, 500/*50% Заполнения*/);
+int main() {
+  motor.setup();
+  motor.generate(CH1, 500/*50% Заполнения ШИМ*/);
 
   while (1) { }
 }
