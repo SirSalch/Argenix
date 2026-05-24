@@ -28,7 +28,7 @@
 #define TIMER_32_2_BASE 0x00082C00
 
 // Структура регисторв 32-битного таймера
-struct Timer32_Struct {
+struct Timer32_RegisterMap {
   volatile uint32_t VALUE;
   volatile uint32_t TOP;
   volatile uint32_t PRESCALER;
@@ -53,8 +53,8 @@ struct Timer32_Struct {
 };
 
 // Структуры регистров 32-битных таймеров
-#define TIMER_32_1 ((Timer32_Struct*)TIMER_32_1_BASE)
-#define TIMER_32_2 ((Timer32_Struct*)TIMER_32_2_BASE)
+#define TIMER_32_1_REG ((Timer32_RegisterMap*)TIMER_32_1_BASE)
+#define TIMER_32_2_REG ((Timer32_RegisterMap*)TIMER_32_2_BASE)
 
 
 // Настройки таймера
@@ -67,51 +67,51 @@ enum {
 };
 
 
-// Структура 32-битного таймера
-template <uintptr_t baseAddress, uint32_t clkMask, typename GpioPort>
+template<uintptr_t timerAddress, typename Port, uint32_t clkMask>
 class Timer32 {
 public:
-  __attribute__((always_inline)) void enable() {
-    reinterpret_cast<Timer32_Struct*>(baseAddress)->ENABLE = 1;
-  }
-
-  __attribute__((always_inline)) void disable() {
-    reinterpret_cast<Timer32_Struct*>(baseAddress)->ENABLE = 0;
-  }
-
-  __attribute__((always_inline)) void reset() {
-    reinterpret_cast<Timer32_Struct*>(baseAddress)->ENABLE = 0x01 << 1 | 0x01;
-  }
-
-  __attribute__((always_inline)) void setupGpio(const uint8_t channel) {
-    GpioPort().setPadMode(channel, PAD_MODE_2);
-  }
-
-  __attribute__((always_inline)) void setClocking(const bool state) {
+  static void setClocking(bool state) {
     (state ? APB->CLK_PERIPHERY_SET : APB->CLK_PERIPHERY_CLEAR) = clkMask;
   }
-  
-  __attribute__((always_inline)) void setTop(const uint32_t value) {
-    reinterpret_cast<Timer32_Struct*>(baseAddress)->TOP = value;
+
+  static void enable() {
+    timer()->ENABLE = 1;
   }
 
-  __attribute__((always_inline)) void setPrescaler(const uint32_t value) {
-    reinterpret_cast<Timer32_Struct*>(baseAddress)->PRESCALER = value;
+  static void disable() {
+    timer()->ENABLE = 0;
   }
 
-  __attribute__((always_inline)) void setOCR(uint8_t ch, uint32_t value) {
-    (&reinterpret_cast<Timer32_Struct*>(baseAddress)->CH1_OCR)[ch * 3] = value;
+  static void reset() {
+    timer()->ENABLE = 1 << 1 | 1;
   }
 
-  __attribute__((always_inline)) void setupChannelPWM(uint8_t ch) {
-    (&reinterpret_cast<Timer32_Struct*>(baseAddress)->CH1_CNTRL)[ch * 3] = (0b11 << 5) | (1 << 7);
+  static void setupPin(uint8_t channel) {
+    GPIO_0.setPadMode(channel, PAD_MODE_2);
   }
+
+  static void setTop(uint32_t value) {
+    timer()->TOP = value;
+  }
+
+  static void setPrescaler(uint32_t value) {
+    timer()->PRESCALER = value;
+  }
+
+  static void setCompare(uint8_t channel, uint32_t value) {
+    (&timer()->CH1_OCR)[channel * 3] = value;
+  }
+
+  static void setupPwmChannel(uint8_t channel) {
+    (&timer()->CH1_CNTRL)[channel * 3] = (0b11 << 5) | (1 << 7);
+  }
+
+private:
+  static inline auto timer() { return reinterpret_cast<Timer32_RegisterMap*>(timerAddress); }
 };
 
 
-// 32-битные таймеры
-static Timer32<TIMER_32_1_BASE, CLK_TIMER_32_1, decltype(Gpio_0)> Timer32_1;
-static Timer32<TIMER_32_2_BASE, CLK_TIMER_32_2, decltype(Gpio_1)> Timer32_2;
-
+static Timer32<TIMER_32_1_BASE, decltype(GPIO_0), CLK_TIMER_32_1> TIMER_32_1;
+static Timer32<TIMER_32_2_BASE, decltype(GPIO_1), CLK_TIMER_32_2> TIMER_32_2;
 
 #endif /* _MIK32_TIMER_32_HPP_ */

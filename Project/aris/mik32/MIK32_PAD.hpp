@@ -22,10 +22,10 @@
 
 
 // Базовый адрес
-#define PAD_CONTROLLER_BASE 0x00050C00
+#define PAD_CONTROL_BASE 0x00050C00
 
 // Структура регистров
-struct PortController_Struct {
+struct PortControl_RegMap {
   volatile uint32_t PAD0_CFG;
   volatile uint32_t PAD0_DS;
   volatile uint32_t PAD0_PUPD;
@@ -38,13 +38,13 @@ struct PortController_Struct {
 };
 
 // Контроллер многофункциональных выводов
-#define PAD_CONTROLLER ((PortController_Struct*)PAD_CONTROLLER_BASE)
+#define PAD_CONTROL_REG ((PortControl_RegMap*)PAD_CONTROL_BASE)
 
 
 enum {
-  PAD0 = PAD_CONTROLLER_BASE,
-  PAD1 = PAD_CONTROLLER_BASE + 0xFFFFFFFF * 3,
-  PAD2 = PAD_CONTROLLER_BASE + 0xFFFFFFFF * 6,
+  PAD0 = PAD_CONTROL_BASE,
+  PAD1 = PAD_CONTROL_BASE + 0xFFFFFFFF * 3,
+  PAD2 = PAD_CONTROL_BASE + 0xFFFFFFFF * 6,
 
   PAD_MODE_0 = 0b00,
   PAD_MODE_1 = 0b01,

@@ -29,6 +29,7 @@ target_compile_options(firmware.elf PRIVATE
     -march=rv32i
     -mabi=ilp32
     -Os
+    -flto
     -nostdlib
     -fno-exceptions
     -fno-asynchronous-unwind-tables

@@ -1,4 +1,5 @@
 import subprocess
+import os
 import time
 import os
 import usb.core
@@ -56,6 +57,8 @@ ocd_cmd = (
   f"resume;"
 )
 
+os.system("killall -9 openocd")
+
 process = subprocess.Popen([
   "openocd",
   "-d0",
@@ -63,7 +66,6 @@ process = subprocess.Popen([
   "-f", config_mcu,
   "-c", ocd_cmd
 ])
-
 
 try:
   while process.poll() is None:
