@@ -18,9 +18,9 @@ add_executable(firmware.elf
 )
 
 target_include_directories(firmware.elf PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/argentix/standard_libraries
-    ${CMAKE_CURRENT_SOURCE_DIR}/argentix
-    ${CMAKE_CURRENT_SOURCE_DIR}/aris/mik32
+    ${CMAKE_CURRENT_SOURCE_DIR}/argenix/standard_libraries
+    ${CMAKE_CURRENT_SOURCE_DIR}/argenix
+    ${CMAKE_CURRENT_SOURCE_DIR}/aris
 )
 
 target_compile_options(firmware.elf PRIVATE
