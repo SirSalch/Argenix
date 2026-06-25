@@ -7,6 +7,7 @@
 #include <MIK32_GPIO.hpp>
 #include <MIK32_SYS_TIMER.hpp>
 #include <MIK32_TIMER_32.hpp>
+#include <MIK32_I2C.hpp>
 
 // Подключение стандартных библиотек ARGENTIX
 #include <Pin.hpp>

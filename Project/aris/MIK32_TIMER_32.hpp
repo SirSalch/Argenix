@@ -87,7 +87,7 @@ public:
   }
 
   static void setupPin(uint8_t channel) {
-    GPIO_0.setPadMode(channel, PAD_MODE_2);
+    Port::setPadMode(channel, PAD_MODE_2);
   }
 
   static void setTop(uint32_t value) {
